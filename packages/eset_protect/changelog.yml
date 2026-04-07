@@ -1,9 +1,9 @@
 # newer versions go on top
 - version: "2.1.2"
   changes:
-    - description: "Parse mail addresses in Threat_Event data"
+    - description: "Parse mail addresses in event.object_uri"
       type: bugfix
-      link: https://github.com/elastic/integrations/pull/17447
+      link: https://github.com/elastic/integrations/pull/18248
 - version: "2.1.1"
   changes:
     - description: |
