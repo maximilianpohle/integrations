@@ -199,12 +199,19 @@ processors:
       value: "{{{eset_protect.event.ipv6}}}"
       allow_duplicates: false
       if: ctx.eset_protect?.event?.ipv6 != null
+  - rename:
+      field: json.occurred
+      tag: rename_occurred_to_occured
+      target_field: json.occured
+      ignore_missing: true
+      if: ctx.json?.occurred != null && ctx.json?.occured == null
   - gsub:
       field: json.occured_plaintext
       pattern: UTC([+-])([0-9])$
       replacement: UTC$10$2:00
       target_field: json.occured
       if: ctx.json?.occured_plaintext != null && ctx.json.occured_plaintext != ''
+
   - date:
       field: json.occured
       tag: date_occured
