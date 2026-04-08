@@ -611,6 +611,14 @@ processors:
             attachments['file'] = file;
             ctx.email['attachments'] = attachments;
         }
+      on_failure:
+        - append:
+            field: error.message
+            value: "object_uri for mails could not be parsed: {{{eset_protect.event.object_uri}}}"
+        - append:
+            field: event.kind
+            value: pipeline_error
+            allow_duplicates: false
   - set:
       field: file.path
       if: "ctx.eset_protect?.event?.object_uri != null && ctx.eset_protect?.event?.object_type?.toLowerCase() == 'file'"
