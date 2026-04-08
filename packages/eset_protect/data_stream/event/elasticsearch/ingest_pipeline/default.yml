@@ -605,11 +605,13 @@ processors:
             ctx.email['subject'] = subject;
         }
         if (attachment != null) {
-            Map attachments = ctx.email['attachments'] instanceof Map ? (Map) ctx.email['attachments'] : new HashMap();
-            Map file = attachments['file'] instanceof Map ? (Map) attachments['file'] : new HashMap();
+            Map attachments = new HashMap();
+            Map file = new HashMap();
             file['name'] = attachment;
             attachments['file'] = file;
-            ctx.email['attachments'] = attachments;
+            List attachmentList = new ArrayList();
+            attachmentList.add(attachments);
+            ctx.email['attachments'] = attachmentList;
         }
       on_failure:
         - append:
