@@ -1,8 +1,8 @@
 # newer versions go on top
-- version: "2.1.2"
+- version: "2.2.0"
   changes:
     - description: "Parse mail addresses in event.object_uri"
-      type: bugfix
+      type: enhancement
       link: https://github.com/elastic/integrations/pull/18248
 - version: "2.1.1"
   changes:
