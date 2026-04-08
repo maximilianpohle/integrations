@@ -573,7 +573,7 @@ processors:
         java.util.regex.Matcher subjectMatch = /(?:\?|&)subject=([^&]+)/.matcher(uri);
         java.util.regex.Matcher attachmentMatch = /(?:\?|&)attachment=([^&]+)/.matcher(uri);
 
-        // Extract all RFC-5321 addresses enclosed in angle brackets from the from= value
+        // Extract RFC 5321 addresses enclosed in angle brackets from the from= value with best effort.
         List fromAddresses = new ArrayList();
         if (fromMatch.find()) {
             java.util.regex.Matcher addressMatch = /<\s*([A-Za-z0-9.!#$%&'*+\/?^_`{|}~-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\s*>/.matcher(fromMatch.group(1));
