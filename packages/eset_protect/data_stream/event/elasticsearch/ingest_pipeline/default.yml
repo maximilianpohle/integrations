@@ -569,12 +569,12 @@ processors:
         String uri = ctx.eset_protect.event.object_uri;
 
         // Match query parameters from the mailto: URI
+        // Assumption: the from= value contains plain-text addresses in angle brackets.
+        // If ESET starts URL-encoding these addresses in the future, decode before applying this matcher.
         java.util.regex.Matcher fromMatch = /(?:\?|&)from=([^&]+)/.matcher(uri);
         java.util.regex.Matcher subjectMatch = /(?:\?|&)subject=([^&]+)/.matcher(uri);
         java.util.regex.Matcher attachmentMatch = /(?:\?|&)attachment=([^&]+)/.matcher(uri);
 
-        // Assumption: the from= value contains plain-text addresses in angle brackets.
-        // If ESET starts URL-encoding these addresses in the future, decode before applying this matcher.
         // Extract RFC 5321 addresses enclosed in angle brackets from the from= value with best effort.
         List fromAddresses = new ArrayList();
         if (fromMatch.find()) {
