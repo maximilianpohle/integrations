@@ -45,9 +45,9 @@ processors:
       patterns:
       - 'Detection type: %{DATA:json.threat_name} Detection name: %{DATA:json.threat_name}
         Computer name: %{HOSTNAME:json.hostname} Logged user: %{DATA:user.domain}\\%{DATA:json.user}
-        Time of occurrence: %{ESET_TIMESTAMP:json.occured_plaintext} Scanner: %{DATA:json.scanner_id}
+        Time of occurrence: %{ESET_TIMESTAMP:json.occurred_plaintext} Scanner: %{DATA:json.scanner_id}
         Action performed: %{DATA:json.action_taken}$'
-      - '^%{DATA:message}\s+%{HOSTNAME:json.hostname} %{ESET_TIMESTAMP:json.occured_plaintext} %{DATA:eset_protect.event.threat_type} %{NOTSPACE:threat.indicator.name} %{ESET_THREAT_INDICATOR_TYPE:json.object_type} %{GREEDYDATA:json.object_uri}$'
+      - '^%{DATA:message}\s+%{HOSTNAME:json.hostname} %{ESET_TIMESTAMP:json.occurred_plaintext} %{DATA:eset_protect.event.threat_type} %{NOTSPACE:threat.indicator.name} %{ESET_THREAT_INDICATOR_TYPE:json.object_type} %{GREEDYDATA:json.object_uri}$'
       pattern_definitions:
         ESET_TIMESTAMP: "%{MONTHNUM}/%{MONTHDAY}/%{YEAR}, %{HOUR}:%{MINUTE}:%{SECOND} (?:AM|PM) UTC\\+%{INT}"
         ESET_THREAT_INDICATOR_TYPE: File
@@ -200,34 +200,34 @@ processors:
       allow_duplicates: false
       if: ctx.eset_protect?.event?.ipv6 != null
   - rename:
-      field: json.occurred
-      tag: rename_occurred_to_occured
-      target_field: json.occured
+      field: json.occured
+      tag: rename_occured_to_occurred
+      target_field: json.occurred
       ignore_missing: true
-      if: ctx.json?.occurred != null && ctx.json?.occured == null
+      description: Fallback for legacy events with the misspelled "occured" field. Renamed to correct spelling "occurred".
+      if: ctx.json?.occurred == null
   - gsub:
-      field: json.occured_plaintext
+      field: json.occurred_plaintext
       pattern: UTC([+-])([0-9])$
       replacement: UTC$10$2:00
-      target_field: json.occured
-      if: ctx.json?.occured_plaintext != null && ctx.json.occured_plaintext != ''
-
+      target_field: json.occurred
+      if: ctx.json?.occurred_plaintext != null && ctx.json.occurred_plaintext != ''
   - date:
-      field: json.occured
-      tag: date_occured
-      target_field: eset_protect.event.occured
+      field: json.occurred
+      tag: date_occurred
+      target_field: eset_protect.event.occurred
       formats:
         - dd-MMM-yyyy HH:mm:ss
         - M/d/yy, h:m:s a z
-      if: ctx.json?.occured != null && ctx.json.occured != ''
+      if: ctx.json?.occurred != null && ctx.json.occurred != ''
       on_failure:
         - append:
             field: error.message
             value: "Processor {{{_ingest.on_failure_processor_type}}} with tag {{{_ingest.on_failure_processor_tag}}} in pipeline {{{_ingest.on_failure_pipeline}}} failed with message: {{{_ingest.on_failure_message}}}"
   - set:
       field: "@timestamp"
-      tag: set_@timestamp_from_event_occured
-      copy_from: eset_protect.event.occured
+      tag: set_@timestamp_from_event_occurred
+      copy_from: eset_protect.event.occurred
       ignore_empty_value: true
   - rename:
       field: json.os_name
@@ -958,7 +958,7 @@ processors:
         - eset_protect.event.hostname
         - eset_protect.event.ipv4
         - eset_protect.event.ipv6
-        - eset_protect.event.occured
+        - eset_protect.event.occurred
         - eset_protect.event.os_name
         - eset_protect.event.source_uuid
         - eset_protect.event.aggregate_count
