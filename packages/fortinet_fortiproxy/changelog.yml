@@ -3,7 +3,7 @@
   changes:
     - description: Make key value parser null safe.
       type: bugfix
-      link: https://github.com/elastic/integrations/pull/17294
+      link: https://github.com/elastic/integrations/pull/18586
 - version: "1.4.0"
   changes:
     - description: Update integration documentation
