@@ -1,0 +1,78 @@
+{
+  "@timestamp": "2026-05-01T10:30:00.000Z",
+  "agent": {
+    "version": "8.13.0",
+    "type": "elastic-agent",
+    "id": "agent-001"
+  },
+  "ecs": {
+    "version": "8.0.0"
+  },
+  "event": {
+    "module": "proxmox_pve",
+    "dataset": "proxmox_pve.vm",
+    "duration": 10000000
+  },
+  "service": {
+    "type": "proxmox_pve",
+    "address": "proxmox.example.com:8006"
+  },
+  "host": {
+    "name": "proxmox-node-01"
+  },
+  "proxmox": {
+    "vm": {
+      "vmid": "100",
+      "id": "qemu/100",
+      "name": "ubuntu-server-01",
+      "node": "proxmox-node-01",
+      "type": "qemu",
+      "status": "running",
+      "template": false,
+      "tags": "production,monitoring",
+      "uptime": 604800,
+      "cpu": {
+        "cores": 4,
+        "usage": {
+          "percent": 25.5
+        }
+      },
+      "memory": {
+        "allocated": {
+          "bytes": 8589934592
+        },
+        "used": {
+          "bytes": 6291456000
+        },
+        "free": {
+          "bytes": 2298478592
+        },
+        "usage": {
+          "percent": 73.2
+        }
+      },
+      "disk": {
+        "allocated": {
+          "bytes": 107374182400
+        },
+        "used": {
+          "bytes": 53687091200
+        },
+        "read": {
+          "bytes": 1099511627776
+        },
+        "write": {
+          "bytes": 549755813888
+        }
+      },
+      "network": {
+        "in": {
+          "bytes": 2147483648
+        },
+        "out": {
+          "bytes": 1073741824
+        }
+      }
+    }
+  }
+}

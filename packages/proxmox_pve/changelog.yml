@@ -1,0 +1,65 @@
+- version: "1.0.10"
+  changes:
+    - description: Remove broken drop_event processor whose condition rendered as a Go memory pointer and dropped all events.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/11
+
+- version: "1.0.9"
+  changes:
+    - description: Set Proxmox query parameter via request.transforms url.params.type for httpjson compatibility.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/10
+
+- version: "1.0.8"
+  changes:
+    - description: Fix stream filtering by switching drop conditions to body.type equality checks.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/9
+
+- version: "1.0.7"
+  changes:
+    - description: Map httpjson body fields into proxmox schema and filter VM/LXC records using body.id.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/8
+
+- version: "1.0.6"
+  changes:
+    - description: Remove restrictive drop_event filters in httpjson streams to restore metric ingestion.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/7
+
+- version: "1.0.5"
+  changes:
+    - description: Query cluster resources with type=vm and split VM/LXC streams by id prefix filtering.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/6
+
+- version: "1.0.4"
+  changes:
+    - description: Set Proxmox token Authorization via request.transforms for stateless httpjson compatibility.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/5
+
+- version: "1.0.3"
+  changes:
+    - description: Remove unused realm setting and clarify API token fields in integration policy.
+      type: enhancement
+      link: https://github.com/elastic/integrations/pull/4
+
+- version: "1.0.2"
+  changes:
+    - description: Use Proxmox API token Authorization header to fix 401 No ticket authentication failures.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/3
+
+- version: "1.0.1"
+  changes:
+    - description: Fix httpjson response decoder content type for VM and LXC streams.
+      type: bugfix
+      link: https://github.com/elastic/integrations/pull/2
+
+- version: "1.0.0"
+  changes:
+    - description: Initial release of Proxmox VE integration
+      type: enhancement
+      link: https://github.com/elastic/integrations/pull/1

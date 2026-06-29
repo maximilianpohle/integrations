@@ -1,0 +1,66 @@
+title: Proxmox VE
+format_version: "3.0.2"
+name: proxmox_pve
+version: "1.0.10"
+description: This Elastic integration collects metrics from Proxmox VE virtual machines and LXC containers
+type: integration
+categories:
+  - observability
+  - virtualization
+  - cloud
+conditions:
+  kibana:
+    version: "^8.19.0 || ^9.1.0"
+  elastic:
+    subscription: basic
+policy_templates:
+  - name: proxmox_pve
+    title: Proxmox VE Metrics
+    description: Collect metrics from Proxmox VE
+    inputs:
+      - type: httpjson
+        title: Collect Proxmox VE Metrics
+        description: Collect VM and LXC container metrics from Proxmox VE API
+        input_group: metrics
+        vars:
+          - name: hosts
+            type: text
+            title: Proxmox VE Hosts
+            multi: false
+            required: true
+            show_user: true
+            default: https://proxmox.example.com:8006
+            description: Proxmox VE API endpoint(s)
+          - name: username
+            type: text
+            title: API Token ID
+            multi: false
+            required: true
+            show_user: true
+            description: Proxmox VE API token identifier in format user@realm!tokenid (e.g., monitoring@pve!elastic)
+          - name: password
+            type: password
+            title: API Token Secret
+            secret: true
+            multi: false
+            required: true
+            show_user: true
+            description: Proxmox VE API token secret
+          - name: insecure
+            required: false
+            show_user: true
+            title: Disable SSL certificate verification
+            description: If true, disables SSL certificate verification
+            type: bool
+            multi: false
+            default: false
+          - name: ca_trusted_fingerprint
+            type: text
+            title: Trusted CA Fingerprint
+            multi: false
+            required: false
+            show_user: false
+            description: SHA256 fingerprint of the trusted CA certificate
+owner:
+  github: elastic/obs-infraobs-integrations
+  type: elastic

@@ -1,0 +1,76 @@
+{
+  "@timestamp": "2026-05-01T10:30:00.000Z",
+  "agent": {
+    "version": "8.13.0",
+    "type": "elastic-agent",
+    "id": "agent-001"
+  },
+  "ecs": {
+    "version": "8.0.0"
+  },
+  "event": {
+    "module": "proxmox_pve",
+    "dataset": "proxmox_pve.lxc",
+    "duration": 10000000
+  },
+  "service": {
+    "type": "proxmox_pve",
+    "address": "proxmox.example.com:8006"
+  },
+  "host": {
+    "name": "proxmox-node-01"
+  },
+  "proxmox": {
+    "lxc": {
+      "vmid": "200",
+      "id": "lxc/200",
+      "name": "debian-container-01",
+      "hostname": "debian-web-01",
+      "node": "proxmox-node-01",
+      "type": "lxc",
+      "status": "running",
+      "template": false,
+      "tags": "web,production",
+      "uptime": 86400,
+      "cpu": {
+        "cores": 2,
+        "usage": {
+          "percent": 12.3
+        }
+      },
+      "memory": {
+        "allocated": {
+          "bytes": 2147483648
+        },
+        "used": {
+          "bytes": 1610612736
+        },
+        "free": {
+          "bytes": 536870912
+        },
+        "swap": {
+          "bytes": 268435456
+        },
+        "usage": {
+          "percent": 75.0
+        }
+      },
+      "rootfs": {
+        "used": {
+          "bytes": 21474836480
+        },
+        "quota": {
+          "bytes": 53687091200
+        }
+      },
+      "network": {
+        "in": {
+          "bytes": 536870912
+        },
+        "out": {
+          "bytes": 268435456
+        }
+      }
+    }
+  }
+}

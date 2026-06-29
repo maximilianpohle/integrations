@@ -1,0 +1,78 @@
+config_version: 2
+interval: {{period}}
+
+request.method: GET
+request.url: {{hosts}}/api2/json/cluster/resources
+request.transforms:
+  - set:
+      target: header.Authorization
+      value: 'PVEAPIToken={{username}}={{password}}'
+  - set:
+      target: url.params.type
+      value: vm
+response.decode_as: application/json
+response.split:
+  target: body.data
+
+{{#if insecure}}
+request.ssl.verification_mode: none
+{{/if}}
+
+tags:
+{{#each tags as |tag|}}
+  - {{tag}}
+{{/each}}
+
+processors:
+  - convert:
+      fields:
+        - from: body.vmid
+          to: proxmox.lxc.vmid
+          type: string
+      ignore_missing: true
+      fail_on_error: false
+  - rename:
+      fields:
+        - from: body.id
+          to: proxmox.lxc.id
+        - from: body.name
+          to: proxmox.lxc.name
+        - from: body.node
+          to: proxmox.lxc.node
+        - from: body.type
+          to: proxmox.lxc.type
+        - from: body.status
+          to: proxmox.lxc.status
+        - from: body.template
+          to: proxmox.lxc.template
+        - from: body.uptime
+          to: proxmox.lxc.uptime
+        - from: body.maxcpu
+          to: proxmox.lxc.cpu.cores
+        - from: body.cpu
+          to: proxmox.lxc.cpu.usage.percent
+        - from: body.maxmem
+          to: proxmox.lxc.memory.allocated.bytes
+        - from: body.mem
+          to: proxmox.lxc.memory.used.bytes
+        - from: body.maxdisk
+          to: proxmox.lxc.rootfs.quota.bytes
+        - from: body.disk
+          to: proxmox.lxc.rootfs.used.bytes
+        - from: body.netin
+          to: proxmox.lxc.network.in.bytes
+        - from: body.netout
+          to: proxmox.lxc.network.out.bytes
+      ignore_missing: true
+      fail_on_error: false
+  - add_fields:
+      target: ""
+      fields:
+        ecs.version: "8.0.0"
+        event.module: proxmox_pve
+        event.dataset: proxmox_pve.lxc
+        service.type: proxmox_pve
+        service.address: {{hosts}}
+{{#if processors}}
+{{processors}}
+{{/if}}

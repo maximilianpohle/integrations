@@ -1,0 +1,195 @@
+- name: "@timestamp"
+  type: date
+  description: Event timestamp
+
+- name: ecs
+  type: group
+  fields:
+    - name: version
+      type: keyword
+      description: ECS version
+
+- name: event
+  type: group
+  fields:
+    - name: module
+      type: keyword
+      description: Event module
+    - name: dataset
+      type: keyword
+      description: Event dataset
+    - name: duration
+      type: long
+      description: Event duration in nanoseconds
+
+- name: service
+  type: group
+  fields:
+    - name: type
+      type: keyword
+      description: Service type
+    - name: address
+      type: keyword
+      description: Service address
+
+- name: agent
+  type: group
+  fields:
+    - name: version
+      type: keyword
+      description: Agent version
+    - name: type
+      type: keyword
+      description: Agent type
+    - name: id
+      type: keyword
+      description: Agent ID
+
+- name: host
+  type: group
+  fields:
+    - name: name
+      type: keyword
+      description: Host name
+
+- name: proxmox.vm
+  type: group
+  description: Proxmox VE Virtual Machine metrics from cluster resources API
+  fields:
+    - name: id
+      type: keyword
+      description: Resource identifier (qemu/VMID)
+      dimension: true
+    - name: vmid
+      type: keyword
+      description: Virtual Machine ID
+      dimension: true
+    - name: name
+      type: keyword
+      description: Virtual Machine name
+      dimension: true
+    - name: node
+      type: keyword
+      description: Proxmox node name
+      dimension: true
+    - name: type
+      type: keyword
+      description: Resource type (qemu)
+    - name: status
+      type: keyword
+      description: "Virtual Machine status (running, stopped, paused)"
+    - name: template
+      type: boolean
+      description: Whether VM is a template
+    - name: tags
+      type: keyword
+      description: VM tags
+    - name: uptime
+      type: long
+      metric_type: gauge
+      unit: s
+      description: Virtual Machine uptime in seconds
+    - name: cpu
+      type: group
+      fields:
+        - name: cores
+          type: long
+          description: Number of CPU cores allocated (maxcpu)
+          dimension: true
+        - name: usage
+          type: group
+          fields:
+            - name: percent
+              type: scaled_float
+              metric_type: gauge
+              unit: percent
+              description: CPU usage percentage (0-100, calculated from cpu ratio * cores * 100)
+    - name: memory
+      type: group
+      fields:
+        - name: allocated
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              unit: byte
+              description: Total allocated memory in bytes (maxmem)
+              dimension: true
+        - name: used
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              metric_type: gauge
+              unit: byte
+              description: Used memory in bytes (mem)
+        - name: free
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              metric_type: gauge
+              unit: byte
+              description: Free memory in bytes
+        - name: usage
+          type: group
+          fields:
+            - name: percent
+              type: scaled_float
+              metric_type: gauge
+              unit: percent
+              description: Memory usage percentage (0-100)
+    - name: disk
+      type: group
+      fields:
+        - name: allocated
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              unit: byte
+              description: Total allocated disk in bytes (maxdisk)
+              dimension: true
+        - name: used
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              metric_type: gauge
+              unit: byte
+              description: Used disk space in bytes (disk)
+        - name: read
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              metric_type: counter
+              unit: byte
+              description: Total bytes read from disk (diskread)
+        - name: write
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              metric_type: counter
+              unit: byte
+              description: Total bytes written to disk (diskwrite)
+    - name: network
+      type: group
+      fields:
+        - name: in
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              metric_type: counter
+              unit: byte
+              description: Total bytes received (netin)
+        - name: out
+          type: group
+          fields:
+            - name: bytes
+              type: long
+              metric_type: counter
+              unit: byte
+              description: Total bytes transmitted (netout)

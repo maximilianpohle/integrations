@@ -1,0 +1,82 @@
+config_version: 2
+interval: {{period}}
+
+request.method: GET
+request.url: {{hosts}}/api2/json/cluster/resources
+request.transforms:
+  - set:
+      target: header.Authorization
+      value: 'PVEAPIToken={{username}}={{password}}'
+  - set:
+      target: url.params.type
+      value: vm
+response.decode_as: application/json
+response.split:
+  target: body.data
+
+{{#if insecure}}
+request.ssl.verification_mode: none
+{{/if}}
+
+tags:
+{{#each tags as |tag|}}
+  - {{tag}}
+{{/each}}
+
+processors:
+  - convert:
+      fields:
+        - from: body.vmid
+          to: proxmox.vm.vmid
+          type: string
+      ignore_missing: true
+      fail_on_error: false
+  - rename:
+      fields:
+        - from: body.id
+          to: proxmox.vm.id
+        - from: body.name
+          to: proxmox.vm.name
+        - from: body.node
+          to: proxmox.vm.node
+        - from: body.type
+          to: proxmox.vm.type
+        - from: body.status
+          to: proxmox.vm.status
+        - from: body.template
+          to: proxmox.vm.template
+        - from: body.uptime
+          to: proxmox.vm.uptime
+        - from: body.maxcpu
+          to: proxmox.vm.cpu.cores
+        - from: body.cpu
+          to: proxmox.vm.cpu.usage.percent
+        - from: body.maxmem
+          to: proxmox.vm.memory.allocated.bytes
+        - from: body.mem
+          to: proxmox.vm.memory.used.bytes
+        - from: body.maxdisk
+          to: proxmox.vm.disk.allocated.bytes
+        - from: body.disk
+          to: proxmox.vm.disk.used.bytes
+        - from: body.diskread
+          to: proxmox.vm.disk.read.bytes
+        - from: body.diskwrite
+          to: proxmox.vm.disk.write.bytes
+        - from: body.netin
+          to: proxmox.vm.network.in.bytes
+        - from: body.netout
+          to: proxmox.vm.network.out.bytes
+      ignore_missing: true
+      fail_on_error: false
+  - add_fields:
+      target: ""
+      fields:
+        ecs.version: "8.0.0"
+        event.module: proxmox_pve
+        event.dataset: proxmox_pve.vm
+        service.type: proxmox_pve
+        service.address: {{hosts}}
+{{#if processors}}
+{{processors}}
+{{/if}}
